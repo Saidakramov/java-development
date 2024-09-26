@@ -45,6 +45,11 @@ public class MathApp {
         //random
         double random = Math.random();
         System.out.println("The random number between 0 and 1 is " + random);
+
+        float subtotal = 22.87f;
+        float tax = subtotal * 0.0825f;
+        float totalDue = subtotal + tax;
+        System.out.printf("Total due is: %.2f", totalDue);
     }
 }
 
