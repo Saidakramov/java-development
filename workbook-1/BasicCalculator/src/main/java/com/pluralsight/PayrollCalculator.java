@@ -2,22 +2,33 @@ package com.pluralsight;
 
 import java.util.Scanner;
 
-public class PayrollCalculator {
+public class  PayrollCalculator {
+
+    static Scanner scannerObject = new Scanner(System.in);
     public static void main(String[] args) {
-        Scanner scannerObject = new Scanner(System.in);
+        String name = Name();
+        float hours = Hours();
+        float payRate= PayRate();
+        scannerObject.close();
+        System.out.println( "Hi " + name + " your gross pay is $" + (hours * payRate));
+    }
+
+    public static String Name() {
 
         System.out.println("Enter your name: ");
-        String name = scannerObject.nextLine();
-
-        System.out.println("Enter hours worked(float format): ");
-        float hours = scannerObject.nextFloat();
-        scannerObject.nextLine();
-
-        System.out.println("Enter your pay rate(float format: ");
-        float payRate = scannerObject.nextFloat();
-        scannerObject.nextLine();
-
-        System.out.println("Hi " + name + " your gross pay is " + (hours * payRate));
-
+        return scannerObject.nextLine();
     }
+
+    public static float Hours() {
+        System.out.println("Enter hours worked(float format): ");
+        //scannerObject.nextLine();
+        return scannerObject.nextFloat();
+    }
+
+    public static float PayRate() {
+        System.out.println("Enter your pay rate(float format): ");
+        //scannerObject.nextLine();
+        return scannerObject.nextFloat();
+    }
+
 }

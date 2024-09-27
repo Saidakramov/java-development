@@ -4,20 +4,35 @@ import java.util.Objects;
 import java.util.Scanner;
 
 public class BasicCalculator {
+    static Scanner myScanner = new Scanner(System.in);
+
     public static void main(String[] args) {
-        Scanner myScanner = new Scanner(System.in);
-        System.out.println("Enter the first floating number: ");
-        float num1 = myScanner.nextFloat();
-
-        System.out.println("Enter the second floating number: ");
-        float num2 = myScanner.nextFloat();
+        float num1 = num();
+        float num2 = num();
         myScanner.nextLine();
+        calculation(num1, num2);
 
-        System.out.println("Would you like to (A)dd, (S)ubstract, (M)ultiply, or (D)ivide? Please type in just a cappital letter. Ex:A");
-        String answer = myScanner.nextLine();
+
         myScanner.close();
+    }
 
-        if (Objects.equals(answer, "A")) {
+    public static float num() {
+        System.out.println("Enter the floating number: ");
+        return myScanner.nextFloat();
+    }
+
+    public static String operation() {
+        System.out.println("Would you like to \n" +
+                "(A)dd, \n" +
+                "(S)ubstract, \n" +
+                "(M)ultiply, or (D)ivide? ");
+        return myScanner.nextLine();
+    }
+
+    public static void calculation(float num1, float num2 ) {
+        String answer = operation().toUpperCase();
+
+        if (Objects.equals(answer, "A" )) {
             System.out.println("Addition of first number and second number is: " + (num1 + num2));
         } else if (Objects.equals(answer, "S")) {
             System.out.println("Subtraction of first number from second number is: " + (num1 - num2));
