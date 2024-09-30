@@ -33,15 +33,15 @@ public class BasicCalculator {
         String answer = operation().toUpperCase();
 
         if (Objects.equals(answer, "A" )) {
-            System.out.println("Addition of first number and second number is: " + (num1 + num2));
+            System.out.println("The addition of first number and the second number is: " + (num1 + num2));
         } else if (Objects.equals(answer, "S")) {
-            System.out.println("Subtraction of first number from second number is: " + (num1 - num2));
+            System.out.println("Subtraction of the first number from the second number is: " + (num1 - num2));
 
         } else if (Objects.equals(answer, "M")) {
-            System.out.println("Multiplication of first number from second number is: " + (num1 * num2));
+            System.out.println("Multiplication of the first number to the second number is: " + (num1 * num2));
 
         } else if (Objects.equals(answer, "D")) {
-            System.out.println("Division of first number from second number is: " + (num1 / num2));
+            System.out.println("Division of the first number to the second number is: " + (num1 / num2));
         }
     }
 }
