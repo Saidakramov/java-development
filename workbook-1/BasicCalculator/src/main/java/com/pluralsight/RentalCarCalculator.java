@@ -30,7 +30,7 @@ public class RentalCarCalculator {
                     "\n Your gps total is: $%.2f " +
                     "\n Your roadside assistance total is: $%.2f " +
                     "\n Your underage surcharge total is: $%.2f " +
-                    "\n Your grand total is $%.2f ",(days * rate), tag, gps, roadside, ((days * rate) * .30) ((days * rate) + tag + gps + roadside));
+                    "\n Your grand total is $%.2f ",(days * rate), tag, gps, roadside, ((days * rate) * .30), ((days * rate) + tag + gps + roadside));
         }
         rentalCalculator.close();
     }
