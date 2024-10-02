@@ -30,7 +30,7 @@ public class TheaterReservations {
 
         if (ticket > 1){
             System.out.println(ticket + " tickets reserved for " + date1 + " under " + last_name + ", " + first_name);
-        } if (ticket <= 1){
+        } else {
             System.out.println(ticket + " ticket reserved for " + date1 + " under " + last_name + ", " + first_name);
         }
 
