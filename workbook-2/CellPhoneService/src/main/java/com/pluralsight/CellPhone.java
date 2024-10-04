@@ -1,19 +1,29 @@
 package com.pluralsight;
 
+import java.sql.SQLOutput;
+
+import static com.pluralsight.CellPhoneApplication.input;
+
 public class CellPhone {
-    private double serialNumber = 0;
+    private int serialNumber = 0;
     private String model = "";
     private String carrier = "";
     private String phoneNumber = "";
     private String owner = "";
 
-    public CellPhone(double serialNumber, String model, String carrier, String phoneNumber, String owner){
+    public CellPhone(int serialNumber, String model, String carrier, String phoneNumber, String owner){
         this.serialNumber = serialNumber;
         this.model = model;
         this.carrier = carrier;
         this.phoneNumber = phoneNumber;
         this.owner = owner;
     }
+
+    public void dial(String phoneN){
+        System.out.println(owner + "'s phone is calling " + phoneN);
+    }
+
+
 
     public String getOwner() {
         return this.owner;
@@ -27,7 +37,7 @@ public class CellPhone {
         return serialNumber;
     }
 
-    public void setSerialNumber(double serialNumber) {
+    public void setSerialNumber(int serialNumber) {
         this.serialNumber = serialNumber;
     }
 
