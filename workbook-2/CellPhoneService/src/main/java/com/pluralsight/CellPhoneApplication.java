@@ -10,12 +10,22 @@ public class CellPhoneApplication {
         CellPhone cellPhone = inputs();
         CellPhone cellPhone1 = inputs();
 
+        CellPhone cellPhone3 = new CellPhone();
+        cellPhone3.setSerialNumber(123456);
+        cellPhone3.setModel("Motorola");
+        cellPhone3.setCarrier("At&t");
+        cellPhone3.setPhoneNumber("415-888-8888");
+        cellPhone3.setOwner("Akbar");
+
         display(cellPhone);
 
         display(cellPhone1);
 
+        display((cellPhone3));
+
         cellPhone1.dial(cellPhone.getPhoneNumber());
         cellPhone.dial(cellPhone1.getPhoneNumber());
+        cellPhone3.dial(cellPhone.getPhoneNumber());
 
         scanner.close();
     }

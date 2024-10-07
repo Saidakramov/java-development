@@ -19,6 +19,14 @@ public class CellPhone {
         this.owner = owner;
     }
 
+    // overloaded constructor
+    public CellPhone(){}
+
+    //overloaded dial method
+    public void dial(CellPhone phone){
+        System.out.println(owner + " 's phone is calling " + phone);
+    }
+
     public void dial(String phoneN){
         System.out.println(owner + "'s phone is calling " + phoneN);
     }
