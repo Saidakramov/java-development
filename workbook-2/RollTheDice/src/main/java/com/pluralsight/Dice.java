@@ -1,7 +1,7 @@
 package com.pluralsight;
 
 public class Dice {
-    public static void main(String[] args) {
-
+    public int roll(){
+        return (int)(Math.random() * 6) + 1;
     }
 }
