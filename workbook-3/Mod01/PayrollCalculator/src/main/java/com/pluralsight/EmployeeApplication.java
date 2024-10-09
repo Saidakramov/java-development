@@ -1,50 +1,79 @@
 package com.pluralsight;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
 
 public class EmployeeApplication {
+    private static Scanner scanner = new Scanner(System.in);
     public static void main(String[] args) throws IOException {
-        reader();
+    fileToProcess();
+    scanner.close();
 
     }
-
 
     public  static void reader() throws IOException {
-        BufferedReader bufReader = new BufferedReader(new FileReader("employees.csv"));
-        try
-        {
-            String input;
-            //Employee[] employees = new Employee[8];
-            // read until there is no more data
-            bufReader.readLine();
-            while((input = bufReader.readLine()) != null) {
-               //System.out.println(input);
+        try {
 
-                //Split the input using |
-                String[] divided = input.split("\\|");
+            String fileToCreate = input("\nEnter the name of the payroll file to create: Ex: title.csv");
+            // create a BufferedWriter
+            BufferedWriter bufWriter = new BufferedWriter(new FileWriter(fileToCreate));
+            // write to the file
 
-                //assign the divided array into variables
-//                int employeeId = Integer.parseInt(divided[0]);
-//                String name = divided[1];
-//                double hoursWorked = Double.parseDouble(divided[2]);
-//                double payRate = Double.parseDouble(divided[3]);
+            bufWriter.write("id|name|gross pay\n");
 
-                //create a new Employee emp
-                Employee employee = new Employee(Integer.parseInt(divided[0]), divided[1], Double.parseDouble(divided[2]), Double.parseDouble(divided[3]));
-                System.out.printf("ID: %d, Name: %s, Gross Pay: $%.2f\n",
-                        employee.getEmployeeId(), employee.getName(), employee.getGrossPay());
+            // read csv file again, to get the employees
+            BufferedReader br = new BufferedReader(new FileReader("employees.csv"));
+
+            List<Employee> employees = new ArrayList<>();
+
+            // turn csv file into employees arr
+            String line;
+            //skip first line with column names
+            br.readLine();
+            int index = 0;
+            while ((line = br.readLine()) != null) {
+                String[] employeeData = line.split("\\|");
+                employees.add(new Employee(Integer.parseInt(employeeData[0]), employeeData[1], Double.parseDouble(employeeData[2]), Double.parseDouble(employeeData[3])));
+                index++;
+
+
             }
-            // close the stream and release the resources
-            bufReader.close();
+            for (Employee e: employees){
+                bufWriter.write(e.toCsvLine());
+            }
+            br.close();
+            bufWriter.close();
+
+            // display info for each employee
+            //System.out.printf("ID: %d, Name: %s, Gross Pay: $%.2f\n",
+
+
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
         }
-        catch(IOException e) {
-            // display stack trace if there was an error
-            e.printStackTrace();
-        }
-        bufReader.close();
     }
+
+    public static String input(String message){
+        System.out.println(message);
+        return scanner.nextLine();
+    }
+
+    public static void fileToProcess() throws IOException {
+        String fileToProcess = input("Enter the name of the file employee file to process: ");
+        while (true) {
+
+            if (fileToProcess.equalsIgnoreCase("employees.csv")) {
+                reader();
+                break;
+            } else {
+                System.out.println("Please enter the correct file name to process. Ex:employees.csv ");
+                fileToProcess = scanner.nextLine();
+            }
+        }
+    }
+
 }

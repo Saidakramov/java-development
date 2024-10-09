@@ -1,5 +1,7 @@
 package com.pluralsight;
 
+import java.sql.SQLOutput;
+
 public class Employee {
     private int employeeId;
     private String name;
@@ -13,6 +15,10 @@ public class Employee {
     this.hoursWorked = hoursWorked;
     this.payRate = payRate;
 
+    }
+
+    public String toCsvLine() {
+        return employeeId + "|" + name + "|" + getGrossPay() + "\n";
     }
 
     public double getGrossPay(){
