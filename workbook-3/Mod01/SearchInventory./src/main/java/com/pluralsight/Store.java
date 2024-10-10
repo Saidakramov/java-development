@@ -1,7 +1,6 @@
 package com.pluralsight;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
@@ -10,11 +9,101 @@ public class Store {
     private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) throws IOException {
-    tryCatcher();
+    //tryCatcher();
+    //loadInventory();
+    //userOptions();
+        loop();
 
+    scanner.close();
     }
 
-    public static void tryCatcher(){
+    public static void loop() {
+
+        String answer;
+        do {
+            userOptions();
+
+            do {
+                System.out.println("\nWould you like to see another product? (Select y/n) ");
+                answer = scanner.nextLine().toUpperCase();
+                if (!answer.equals("Y") && !answer.equals("N")) {
+                    System.out.println("Invalid input. Please input 'y' or 'n' .");
+                }
+            }while (!answer.equals("Y") && !answer.equals("N")) ;
+
+
+
+        }while (answer.equals("Y"));
+    }
+
+    public static Map<String, Product> loadInventory() {
+        Map<String, Product> inventory = new HashMap<>();
+        try {
+            BufferedReader br = new BufferedReader(new FileReader("inventory.csv"));
+
+
+            System.out.println("We carry the following inventory: ");
+
+            String line;
+            int index = 0;
+            while ((line = br.readLine()) != null) {
+                String[] inventoryData = line.split("\\|");
+                Product p = new Product(Integer.parseInt(inventoryData[0]), inventoryData[1], Float.parseFloat(inventoryData[2]));
+                inventory.put(inventoryData[1], p);
+                index++;
+            }
+            for(String key : inventory.keySet()){
+                System.out.println(key);
+            }
+
+            br.close();
+
+        }catch (IOException e){
+            e.getMessage();
+        }
+        return inventory;
+    }
+
+    public static void userOptions() {
+        Map<String, Product> inventory = loadInventory();
+
+        String answer = input("\nPlease enter the name of the product you would like to look up? ").toLowerCase();
+
+        while (true) {
+            if (answer.contains("hammer")) {
+                System.out.println(inventory.get("Hammer"));
+                break;
+            } else if (answer.contains("trigger clamps")) {
+                System.out.println(inventory.get("Large Trigger Clamps"));
+                break;
+            } else if (answer.contains("spring clamps")) {
+                System.out.println(inventory.get("2\" Spring Clamp"));
+                break;
+            } else if (answer.contains("wrench")) {
+                System.out.println(inventory.get("10\" Crescent Wrench"));
+                break;
+            } else if (answer.contains("tool set")) {
+                System.out.println(inventory.get("Mechanics Tool Set"));
+                break;
+            } else if (answer.contains("2x4")) {
+                System.out.println(inventory.get("10' 2x4  (grade B)"));
+                break;
+            } else if (answer.contains("screwdriver")) {
+                System.out.println(inventory.get("9-in-1 Ratcheting Screwdriver"));
+                break;
+            }else if (answer.contains("box of nails")) {
+                System.out.println(inventory.get("Box of nails"));
+                break;
+            } else {
+                System.out.println("Please enter the correct inventory name! ");
+                answer = scanner.nextLine();
+            }
+        }
+    }
+
+
+
+        public static List<Product> tryCatcher(){
         try {
             BufferedReader br = new BufferedReader(new FileReader("inventory.csv"));
 
@@ -35,10 +124,12 @@ public class Store {
                 System.out.printf("id: %d %s - Price: $%.2f\n",
                         p.getId(), p.getName(), p.getPrice());
             }
+            br.close();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
+            return null;
+        }
 
     public static String input(String message){
         System.out.println(message);
@@ -66,4 +157,5 @@ public class Store {
         inventory.add(new Product(5, "Pineapple", 2.99f));
         return inventory;
     }
+
 }
