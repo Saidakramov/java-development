@@ -32,5 +32,10 @@ public class Product {
     public float getPrice() {
         return this.price;
     }
+
+    public String getAll(){
+        return Integer.toString(this.id) + " " + this.name + " " + Float.toString(this.price);
+
+    }
 }
 

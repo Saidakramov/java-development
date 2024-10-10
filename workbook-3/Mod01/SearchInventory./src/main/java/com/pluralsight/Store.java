@@ -9,9 +9,9 @@ public class Store {
     private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) throws IOException {
-    //tryCatcher();
-    //loadInventory();
-    //userOptions();
+//    tryCatcher();
+//    loadInventory();
+//    userOptions();
         loop();
 
     scanner.close();
@@ -31,8 +31,6 @@ public class Store {
                 }
             }while (!answer.equals("Y") && !answer.equals("N")) ;
 
-
-
         }while (answer.equals("Y"));
     }
 
@@ -49,7 +47,7 @@ public class Store {
             while ((line = br.readLine()) != null) {
                 String[] inventoryData = line.split("\\|");
                 Product p = new Product(Integer.parseInt(inventoryData[0]), inventoryData[1], Float.parseFloat(inventoryData[2]));
-                inventory.put(inventoryData[1], p);
+                inventory.put(inventoryData[1].toLowerCase(), p);
                 index++;
             }
             for(String key : inventory.keySet()){
@@ -70,29 +68,8 @@ public class Store {
         String answer = input("\nPlease enter the name of the product you would like to look up? ").toLowerCase();
 
         while (true) {
-            if (answer.contains("hammer")) {
-                System.out.println(inventory.get("Hammer"));
-                break;
-            } else if (answer.contains("trigger clamps")) {
-                System.out.println(inventory.get("Large Trigger Clamps"));
-                break;
-            } else if (answer.contains("spring clamps")) {
-                System.out.println(inventory.get("2\" Spring Clamp"));
-                break;
-            } else if (answer.contains("wrench")) {
-                System.out.println(inventory.get("10\" Crescent Wrench"));
-                break;
-            } else if (answer.contains("tool set")) {
-                System.out.println(inventory.get("Mechanics Tool Set"));
-                break;
-            } else if (answer.contains("2x4")) {
-                System.out.println(inventory.get("10' 2x4  (grade B)"));
-                break;
-            } else if (answer.contains("screwdriver")) {
-                System.out.println(inventory.get("9-in-1 Ratcheting Screwdriver"));
-                break;
-            }else if (answer.contains("box of nails")) {
-                System.out.println(inventory.get("Box of nails"));
+            if (inventory.containsKey(answer.toLowerCase())){
+                System.out.println(inventory.get(answer).getAll());
                 break;
             } else {
                 System.out.println("Please enter the correct inventory name! ");
@@ -104,10 +81,9 @@ public class Store {
 
 
         public static List<Product> tryCatcher(){
+            List<Product> inventory = new ArrayList<>();
         try {
             BufferedReader br = new BufferedReader(new FileReader("inventory.csv"));
-
-            List<Product> inventory = new ArrayList<>();
 
             System.out.println("We carry the following inventory: ");
 
@@ -128,7 +104,7 @@ public class Store {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-            return null;
+            return inventory;
         }
 
     public static String input(String message){
