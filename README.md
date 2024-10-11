@@ -1,5 +1,5 @@
 # Akbar Saidakramov
-LinkedIn [here](https://www.linkedin.com/in/akbar-saidakramov/).  
+LinkedIn [link](https://www.linkedin.com/in/akbar-saidakramov/).  
 
 I am an aspiring Cloud developer and a
 Year Up United student learning Java,
