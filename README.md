@@ -11,7 +11,7 @@ from UC Berkeley's Extension program.
 
 ### Proficient in :
 * MS Word, MS Teams, MS Excel, VBA.
-* JavaScript, HTML, Slack.
+* JavaScript, HTML.
 * SQL, Python, R, RDBS, Machine Learning, Tableau, and Big Data.
 * Java
 ## Experience
