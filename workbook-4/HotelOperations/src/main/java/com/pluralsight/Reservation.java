@@ -12,13 +12,6 @@ public class Reservation {
         this.numberOfNights = numberOfNights;
         this.weekend = weekend;
 
-        if ("double".equalsIgnoreCase(roomType)) {
-            this.price = 124.0;
-        } else if ("king".equalsIgnoreCase(roomType)) {
-            this.price = 139.0;
-        } else {
-            throw new IllegalArgumentException("Invalid room type: " + roomType + " must be king or double");
-        }
     }
 
     public String getRoomType() {
@@ -46,6 +39,13 @@ public class Reservation {
     }
 
     public double getPrice() {
+        if ("double".equalsIgnoreCase(roomType)) {
+            this.price = 124.0;
+        } else if ("king".equalsIgnoreCase(roomType)) {
+            this.price = 139.0;
+        } else {
+            throw new IllegalArgumentException("Invalid room type: " + roomType + " must be king or double");
+        }
         return price;
     }
 
