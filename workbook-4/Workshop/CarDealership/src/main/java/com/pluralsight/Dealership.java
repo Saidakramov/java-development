@@ -1,5 +1,8 @@
 package com.pluralsight;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +17,9 @@ public class Dealership {
         this.address = address;
         this.phone = phone;
         this.vehicles = vehicles;
+    }
+    public Dealership(){
+        
     }
 
     public List<Vehicle> getVehiclesByPrice(int min, int max){
@@ -44,7 +50,7 @@ public class Dealership {
         return null;
     }
 
-    public void addVehicle(ArrayList<Vehicle> vehicles){
+    public void addVehicle(Vehicle vehicle){
 
     }
 
