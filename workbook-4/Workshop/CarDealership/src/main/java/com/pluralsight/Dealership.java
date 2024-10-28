@@ -1,10 +1,7 @@
 package com.pluralsight;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class Dealership {
     private String name;
@@ -19,43 +16,107 @@ public class Dealership {
         this.vehicles = vehicles;
     }
     public Dealership(){
-        
+        this.vehicles = new ArrayList<>();
     }
 
-    public List<Vehicle> getVehiclesByPrice(int min, int max){
-        return null;
+    public ArrayList<Vehicle> getVehiclesByPrice(double min, double max){
+        ArrayList<Vehicle> matchingVehicles = new ArrayList<>();
+        for (Vehicle vehicle : vehicles) {
+            if (vehicle.getPrice() >= min && vehicle.getPrice() <= max) {
+                matchingVehicles.add(vehicle);
+            }
+        }
+        return matchingVehicles;
     }
 
-    public List<Vehicle> getVehiclesByMakeModel(String make, String model){
-        return null;
+    public ArrayList<Vehicle> getVehiclesByMakeModel(String make, String model){
+        ArrayList<Vehicle> matchingVehicles = new ArrayList<>();
+        for (Vehicle vehicle : vehicles) {
+            if (vehicle.getMake().equalsIgnoreCase(make) && vehicle.getModel().equalsIgnoreCase(model)) {
+                matchingVehicles.add(vehicle);
+            }
+        }
+        return matchingVehicles;
     }
 
-    public List<Vehicle> getVehiclesByYear(int min, int max){
-        return null;
+    public ArrayList<Vehicle> getVehiclesByYear(int min, int max){
+        ArrayList<Vehicle> matchingVehicles = new ArrayList<>();
+        for (Vehicle vehicle : vehicles) {
+            if (vehicle.getYear() >= min && vehicle.getYear() <= max) {
+                matchingVehicles.add(vehicle);
+            }
+        }
+        return matchingVehicles;
     }
 
-    public List<Vehicle> getVehiclesByColor(String color){
-        return null;
+    public ArrayList<Vehicle> getVehiclesByColor(String color){
+        ArrayList<Vehicle> matchingVehicles = new ArrayList<>();
+        for (Vehicle vehicle : vehicles) {
+            if (vehicle.getColor().equalsIgnoreCase(color)) {
+                matchingVehicles.add(vehicle);
+            }
+        }
+        return matchingVehicles;
     }
 
-    public List<Vehicle> getVehiclesByMileage(int min, int max){
-        return null;
+    public ArrayList<Vehicle> getVehiclesByMileage(int min, int max){
+        ArrayList<Vehicle> matchingVehicles = new ArrayList<>();
+        for (Vehicle vehicle : vehicles) {
+            if (vehicle.getOdometer() >= min && vehicle.getOdometer() <= max) {
+                matchingVehicles.add(vehicle);
+            }
+        }
+        return matchingVehicles;
     }
 
-    public List<Vehicle> getVehiclesByType(String type){
-        return null;
+    public ArrayList<Vehicle> getVehiclesByType(String type){
+        ArrayList<Vehicle> matchingVehicles = new ArrayList<>();
+        for (Vehicle vehicle : vehicles) {
+            if (vehicle.getVehicleType().equalsIgnoreCase(type)) {
+                matchingVehicles.add(vehicle);
+            }
+        }
+        return matchingVehicles;
     }
 
-    public List<Vehicle> getAllVehicles(){
-        return null;
+    public ArrayList<Vehicle> getAllVehicles(){
+        return new  ArrayList<>(vehicles);
     }
 
     public void addVehicle(Vehicle vehicle){
+        vehicles.add(vehicle);
+
+        try(FileWriter writer = new FileWriter("inventory.csv", true)) {
+            writer.write(toCSV(vehicle) + "\n");
+        } catch (IOException e) {
+            System.out.println("Error writing to inventory file : " + e.getMessage());
+        }
+    }
+
+    public void removeVehicle(ArrayList<Vehicle> vehicle){
+        if (!vehicles.remove(vehicle)) {
+            System.out.println("Vehicle not found in the inventory. ");
+            return;
+        }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("inventory.csv"))) {
+            File file = new File("inventory.csv");
+            if (file.length() == 0) {
+                writer.write("vin|year|make|model|vehicleType|color|odometer|price\n");
+                for (Vehicle v : vehicles) {
+                    writer.write(toCSV(v) + "\n");
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error updating inventory file: " + e.getMessage());
+        }
+
 
     }
 
-    public void removeVehicle(ArrayList<Vehicle> vehicles){
-
+    public String toCSV(Vehicle vehicle) {
+        return vehicle.getVin() + "|" + vehicle.getYear() + "|" + vehicle.getMake() + "|" + vehicle.getModel() + "|" +
+                vehicle.getVehicleType() + "|" + vehicle.getColor() + "|" + vehicle.getOdometer() + "|" + vehicle.getPrice();
     }
 
     public String getName() {
