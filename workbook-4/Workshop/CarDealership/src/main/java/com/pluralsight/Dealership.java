@@ -80,38 +80,66 @@ public class Dealership {
     }
 
     public ArrayList<Vehicle> getAllVehicles(){
-        return new  ArrayList<>(vehicles);
+        return new ArrayList<>(vehicles);
     }
 
-    public void addVehicle(Vehicle vehicle){
+    public void addVehicle(Vehicle vehicle) {
+        // Check if a vehicle with the same VIN already exists
+        for (Vehicle v : vehicles) {
+            if (v.getVin() == vehicle.getVin()) {
+                System.out.println("Vehicle with this VIN already exists.");
+                return;
+            }
+        }
         vehicles.add(vehicle);
+        writeVehiclesToCSV();
+    }
 
-        try(FileWriter writer = new FileWriter("inventory.csv", true)) {
-            writer.write(toCSV(vehicle) + "\n");
-        } catch (IOException e) {
-            System.out.println("Error writing to inventory file : " + e.getMessage());
+    public void removeVehicle(Vehicle vehicle) {
+        if (!vehicles.remove(vehicle)) {
+            System.out.println("Vehicle not found in the inventory.");
+        } else {
+            writeVehiclesToCSV();
+            System.out.println("Vehicle removed successfully and inventory updated.");
         }
     }
 
-    public void removeVehicle(ArrayList<Vehicle> vehicle){
-        if (!vehicles.remove(vehicle)) {
-            System.out.println("Vehicle not found in the inventory. ");
-            return;
-        }
+    // Method to load vehicles from CSV file
+    private void loadInventory() {
+        File file = new File("inventory.csv");
+        if (!file.exists()) return; // No file to load
 
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line = reader.readLine(); // Skip header line
+            while ((line = reader.readLine()) != null) {
+                String[] data = line.split("\\|");
+                Vehicle vehicle = new Vehicle(
+                        Integer.parseInt(data[0]), // VIN
+                        Integer.parseInt(data[1]), // Year
+                        data[2],                   // Make
+                        data[3],                   // Model
+                        data[4],                   // VehicleType
+                        data[5],                   // Color
+                        Integer.parseInt(data[6]), // Odometer
+                        Double.parseDouble(data[7]) // Price
+                );
+                vehicles.add(vehicle);
+            }
+        } catch (IOException | NumberFormatException e) {
+            System.out.println("Error loading inventory: " + e.getMessage());
+        }
+    }
+
+    // Method to write all vehicles to CSV file
+    private void writeVehiclesToCSV() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("inventory.csv"))) {
-            File file = new File("inventory.csv");
-            if (file.length() == 0) {
-                writer.write("vin|year|make|model|vehicleType|color|odometer|price\n");
-                for (Vehicle v : vehicles) {
-                    writer.write(toCSV(v) + "\n");
-                }
+            writer.write("vin|year|make|model|vehicleType|color|odometer|price\n");
+            for (Vehicle v : vehicles) {
+                writer.write(toCSV(v) + "\n");
             }
         } catch (IOException e) {
-            System.out.println("Error updating inventory file: " + e.getMessage());
+            System.out.println("Error writing to inventory file: " + e.getMessage());
         }
-
-
     }
 
     public String toCSV(Vehicle vehicle) {

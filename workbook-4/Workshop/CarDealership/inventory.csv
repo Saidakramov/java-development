@@ -1,0 +1,7 @@
+vin|year|make|model|vehicleType|color|odometer|price
+10001|2010|Mercedes|C300|car|Black|65000|7890.0
+10002|2019|Toyota |Camry|car|Black|15000|18600.0
+10003|2000|Toyota|Corolla|car|White|187000|2000.0
+10004|2021|Toyota|Venza|SUV|Burgundy|10100|30000.0
+10005|2010|Audi|A4 Quatro|car|Grey|145000|5600.0
+10006|2023|Toyota|Mirai|car|Grey|16100|54000.0

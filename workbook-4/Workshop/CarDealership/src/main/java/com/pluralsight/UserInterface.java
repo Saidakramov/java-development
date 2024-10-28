@@ -4,16 +4,17 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class UserInterface {
-    Dealership dealership;
+    private final Dealership dealership;
+    private final Scanner scanner;
 
     public UserInterface(Dealership dealership) {
         this.dealership = dealership;
+        this.scanner = new Scanner(System.in);
     }
 
     public void init(){
-        this.dealership = DealershipFileManager.getDealership();
         display();
-
+        scanner.close();
 
     }
 
@@ -21,18 +22,27 @@ public class UserInterface {
         String answer;
         do {
             answer = input("""
-                Please select options below :\
-               
-                1 - Find vehicles within price range\
-                2 - Find vehicles by make / model\
-                3 - Find vehicles by year range\
-                4 - Find vehicles by color\
-                5 - Find vehicles by mileage range\
-                6 - Find vehicles by type(car, truck, SUV, van)\
-                7 - List all vehicles\
-                8 - Add a vehicle\
-                9 - Remove a vehicle\
-                99 - Quit.\s""");
+                    Please select options below : \
+                   
+                    1 - Find vehicles within price range \
+                    
+                    2 - Find vehicles by make / model \
+                    
+                    3 - Find vehicles by year range \
+                    
+                    4 - Find vehicles by color \
+                    
+                    5 - Find vehicles by mileage range \
+                    
+                    6 - Find vehicles by type(car, truck, SUV, van) \
+                    
+                    7 - List all vehicles \
+                    
+                    8 - Add a vehicle \
+                    
+                    9 - Remove a vehicle \
+                    
+                    99 - Quit.\s""");
 
             switch (answer) {
                 case "1" -> processGetByPriceRequest();
@@ -52,8 +62,21 @@ public class UserInterface {
     }
 
     public void displayVehicles(ArrayList<Vehicle> vehicles) {
-        for (Vehicle vehicle : vehicles){
-            System.out.println(vehicle);
+        if (vehicles.isEmpty()) {
+            System.out.println("No vehicles found.");
+            return;
+        }
+
+        // Print header
+        System.out.printf("%-10s %-5s %-10s %-10s %-12s %-10s %-10s %-10s\n",
+                "VIN", "Year", "Make", "Model", "Type", "Color", "Odometer", "Price");
+        System.out.println("----------------------------------------------------------------------------------");
+
+        // Print each vehicle in a formatted row
+        for (Vehicle vehicle : vehicles) {
+            System.out.printf("%-10d %-5d %-10s %-10s %-12s %-10s %-,10d $%-10.2f\n",
+                    vehicle.getVin(), vehicle.getYear(), vehicle.getMake(), vehicle.getModel(),
+                    vehicle.getVehicleType(), vehicle.getColor(), vehicle.getOdometer(), vehicle.getPrice());
         }
     }
 
@@ -174,19 +197,20 @@ public class UserInterface {
     public void processRemoveVehicleRequest(){
         try {
             int vin = Integer.parseInt(input("Enter VIN of the vehicle to remove: "));
+            Vehicle vehicleToRemove = null;
 
-            ArrayList<Vehicle> vehicles = new ArrayList<>();
             for (Vehicle vehicle : dealership.getVehicles()) {
                 if (vehicle.getVin() == vin) {
-                    vehicles.add(vehicle);
+                    vehicleToRemove = vehicle;
+                    break;
                 }
             }
 
-            if (vehicles.isEmpty()) {
+            if (vehicleToRemove == null) {
                 System.out.println("Vehicle with specified VIN not found. ");
             } else {
-                dealership.removeVehicle(vehicles);
-                System.out.println("Vehicle removed successfully. ");
+                dealership.removeVehicle(vehicleToRemove);
+                //System.out.println("Vehicle removed successfully. ");
             }
         } catch (NumberFormatException e) {
             System.out.println("Invalid input. Please enter a correct VIN number. ");
@@ -199,7 +223,6 @@ public class UserInterface {
     }
 
     public String input(String message){
-        Scanner scanner = new Scanner(System.in);
         System.out.println(message);
         return scanner.nextLine();
     }
