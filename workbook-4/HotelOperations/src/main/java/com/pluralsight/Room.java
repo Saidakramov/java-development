@@ -14,24 +14,25 @@ public class Room {
         this.dirty = dirty;
         this.available = available;
     }
-    public boolean checkedIn(){
+
+    public Room() {
+
+    }
+
+    public void checkedIn(){
         this.occupied = true;
         this.dirty = true;
-        return true;
     }
 
-    public boolean checkedOut() {
+    public void checkedOut() {
         this.occupied = false;
         this.dirty = true;
-        return true;
     }
 
-    public boolean cleanRoom(){
+    public void cleanRoom(){
         if (!this.occupied){
             this.dirty = false;
-            return true;
         }
-        return false;
     }
 
     public int getNumberOfBeds() {
