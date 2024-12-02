@@ -38,32 +38,42 @@ public class ActorsDataManager {
     }
 
     // fetch movies by first last name
-    public void printMovies() {
-        System.out.println("Please enter the first name of the actor you would like to see: ");
-        String firstNameChoice = scanner.nextLine();
+    public List<Film> printMovies() {
+        System.out.println("Please enter the actor Id of the actor you would like to see movies list: ");
+        int actorId = scanner.nextInt();
+        scanner.nextLine();
 
-        System.out.println("Please enter the last name of the actor you would like to see: ");
-        String lastNameChoice = scanner.nextLine();
-
-        if (firstNameChoice == null || lastNameChoice == null || firstNameChoice.trim().isEmpty() || lastNameChoice.trim().isEmpty()) {
-            System.out.println("No first name or last name provided");
-            return;
+        if (actorId == 0) {
+            System.out.println("No id provided");
+            return Collections.emptyList();
         }
 
-        String query = "SELECT f.title " +
-                        "FROM film f " +
-                        "JOIN film_actor fa ON f.film_id = fa.film_id " +
-                        "JOIN actor a ON  fa.actor_id = a.actor_id " +
-                        "WHERE first_name LIKE ? AND last_name LIKE ?";
+        String query = """
+            SELECT\s
+                f.film_id,\s
+                f.title,\s
+                f.description,\s
+                f.release_year,\s
+                f.length\s
+            FROM film f\s
+            JOIN film_actor fa ON f.film_id = fa.film_id\s
+            JOIN actor a ON fa.actor_id = a.actor_id\s
+            WHERE a.actor_id = ?
+           \s""";
 
-        List<String> movies = fetchMovies(query, "%" + firstNameChoice.trim() + "%", "%" + lastNameChoice.trim() + "%");
+        List<Film> movies = fetchMovies(query, actorId);
 
         if (movies.isEmpty()) {
             System.out.println("No movies found for specified actor.");
         } else {
-            System.out.println("Movies :");
-            movies.forEach(System.out::println);
+            System.out.printf("%-10s %-35s %-60s %-4s %-10s", "filmId", "title", "description", "releaseYear", "length");
+            System.out.println("------------------------------------------------------------------------");
+            for (Film film : movies) {
+                System.out.println(film.toStringMovies());
+            }
         }
+
+        return movies;
     }
 
     // Print actors list with dynamic headers
@@ -107,19 +117,25 @@ public class ActorsDataManager {
         return actors;
     }
 
-    public List<String> fetchMovies(String query, String firstName, String lastName) {
-        List<String> movies = new ArrayList<>();
+    public List<Film> fetchMovies(String query, int id) {
+        List<Film> movies = new ArrayList<>();
 
         try (Connection connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement(query)) {
 
             //setting parameters
-            statement.setString(1, firstName);
-            statement.setString(2,lastName);
+            statement.setInt(1, id);
+
 
             try (ResultSet rs = statement.executeQuery()) {
                 while (rs.next()) {
-                    movies.add(rs.getString("title"));
+                    int filmId = rs.getInt("film_id");
+                    String title =  rs.getString("title");
+                    String description = rs.getString("description");
+                    int year = rs.getInt("release_year");
+                    double length = rs.getDouble("length");
+
+                    movies.add(new Film(filmId, title, description, year, length));
                 }
             }
         } catch (SQLException e) {
