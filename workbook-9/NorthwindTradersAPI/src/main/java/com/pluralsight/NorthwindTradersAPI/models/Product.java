@@ -13,6 +13,10 @@ public class Product {
         this.unitPrice = unitPrice;
     }
 
+    public Product() {
+
+    }
+
     public int getProductId() {
         return productId;
     }
