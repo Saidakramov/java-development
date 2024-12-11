@@ -84,4 +84,19 @@ public class JdbcCategoryDao implements CategoryDAO{
         }
         return null;
     }
+
+    @Override
+    public Category addCategory(Category category) {
+        try(Connection connection = dataSource.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO Categories (CategoryID, CategoryName) values(?, ?)");
+            preparedStatement.setInt(1, category.getCategoryId());
+            preparedStatement.setString(2, category.getCategoryName());
+            int rowsAffected = preparedStatement.executeUpdate();
+            System.out.println(rowsAffected + " were added.");
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return category;
+    }
 }

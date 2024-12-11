@@ -67,7 +67,7 @@ public class JdbcProductDao implements ProductDAO{
     }
 
     @Override
-    public Product getproductByName(String name) {
+    public Product getProductByName(String name) {
         String query = "Select * FROM Products WHERE ProductName = ?";
 
         try(Connection connection = dataSource.getConnection();
@@ -88,5 +88,22 @@ public class JdbcProductDao implements ProductDAO{
             System.out.println(e);
         }
         return null;
+    }
+
+    @Override
+    public Product addProduct(Product product) {
+        try(Connection connection = dataSource.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO Products (ProductID, ProductName, CategoryId, UnitPrice) values(?, ?, ?, ?)");
+            preparedStatement.setInt(1, product.getProductId());
+            preparedStatement.setString(2, product.getProductName());
+            preparedStatement.setInt(3, product.getCategoryId());
+            preparedStatement.setDouble(4, product.getUnitPrice());
+            int rowsAffected = preparedStatement.executeUpdate();
+            System.out.println(rowsAffected + " were added.");
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return product;
     }
 }

@@ -4,10 +4,8 @@ import com.pluralsight.NorthwindTradersAPI.CategoryDAO;
 import com.pluralsight.NorthwindTradersAPI.ProductDAO;
 import com.pluralsight.NorthwindTradersAPI.models.Product;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,10 +50,19 @@ public class ProductController {
 
     @GetMapping("/name/{productName}")
     public Product getProductByName(@PathVariable String productName) {
-        return dao.getproductByName(productName);
+        return dao.getProductByName(productName);
 //        return products.stream()
 //                .filter(product -> Objects.equals(product.getProductName(), productName))
 //                .findFirst()
 //                .orElseThrow(() -> new RuntimeException("Product name not found with name: " + productName));
     }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Product addProduct(@RequestBody Product product) {
+        Product newProduct = dao.addProduct(product);
+
+        return product;
+    }
+
 }

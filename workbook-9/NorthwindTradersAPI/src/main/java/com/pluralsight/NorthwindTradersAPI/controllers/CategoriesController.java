@@ -3,10 +3,8 @@ package com.pluralsight.NorthwindTradersAPI.controllers;
 import com.pluralsight.NorthwindTradersAPI.CategoryDAO;
 import com.pluralsight.NorthwindTradersAPI.models.Category;
 import com.pluralsight.NorthwindTradersAPI.models.Product;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Objects;
@@ -48,6 +46,14 @@ public class CategoriesController {
 //                .filter(category -> Objects.equals(category.getCategoryName(), categoryName))
 //                .findFirst()
 //                .orElseThrow(() -> new RuntimeException("Category name not found : " + categoryName));
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Category addCategory(@RequestBody Category category) {
+        Category newCategory = dao.addCategory(category);
+
+        return category;
     }
 
 }
